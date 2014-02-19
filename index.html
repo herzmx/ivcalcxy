@@ -739,7 +739,7 @@ function code_save() { //Displays a SaveCode
 		c += '!'+$('number-'+r).value+','+$('level-'+r).value+','+$('stat0-'+r).value+','+$('stat1-'+r).value+','+$('stat2-'+r).value+','+$('stat3-'+r).value+','+$('stat4-'+r).value+','+$('stat5-'+r).value+','+$('ep0-'+r).value+','+$('ep1-'+r).value+','+$('ep2-'+r).value+','+$('ep3-'+r).value+','+$('ep4-'+r).value+','+$('ep5-'+r).value+','+$('nat-'+r).value+','+$('char-'+r).value+','+$('hpt-'+r).value+','+$('pot0-'+r).value+','+$('pot1-'+r).value+','+$('pot2-'+r).value;
 		if (i > 0) { r = s[i-1].id.split('-')[1]; }
 	} while (i--);
-	display_status('<a href="'+c+'">SaveCode</a> (<a href="http://j.mp/http://www.legendarypokemon.net/ivcalcxy.html'+c+'" target="_blank">acortar</a>):<br/>'+c.split('!').join('! '));
+	display_status('<a href="'+c+'">SaveCode</a> (<a href="http://x.co/?url=http://www.legendarypokemon.net/ivcalcxy.html'+c+'" target="_blank">acortar</a>):<br/>'+c.split('!').join('! '));
 	$('contact').href = 'http://www.legendarypokemon.net/contact?topic=IV%20Calculator&text='+escape('Mi navegador es: '+navigator.userAgent+'\nMi savecode es: '+c+'\n\n');
 	//window.location += c; //Uncomment for old behaviour
 }
