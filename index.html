@@ -34,7 +34,6 @@ body {
 	border-color: inherit;
 	line-height: 14px;
 	margin: 0;
-	padding: 0;
 }
 #calculator {
 	background: #b5bdb9;
@@ -74,7 +73,6 @@ body {
 	margin: 4px 0 0 0;
 }
 #calculator option { padding: 0 0 0 4px; }
-#calculator #pot1 { height: auto; }
 #calculator input:focus, #calculator select:focus {
 	outline: 3px double #e4287c;
 	border-color: #fff;
@@ -299,13 +297,58 @@ body {
 #calculator h2 { border-bottom: 1px solid #000 !important; }
 </style>
 <style type="text/css" id="thema">/* required for the "Colorize" functionality */</style>
+<link href="js/select2/select2.css" rel="stylesheet"/>
+<style type="text/css">
+.select2-container, .select2-drop{
+	text-align: left;
+}
+
+.select2-container .select2-choice{
+	padding-left: 8px !important;
+}
+
+.select2-container span{
+	line-height: 26px !important;
+}
+
+.select2-container input{
+	border: 0 none !important;
+	margin: 1px 0 !important;
+	padding: 5px !important;
+	text-align: left !important;
+	font-size: 100% !important;
+}
+
+.select2-container input:focus {
+	border-color: 0px none !important;
+	outline: 0px none !important;
+	border-color: transparent !important;
+	-moz-border-radius: 0 !important;
+	-webkit-border-radius: 0 !important;
+	border-radius: 0 !important;
+	position: relative;
+	text-decoration: none;
+}
+
+.select2-container-multi .select2-choices {
+    cursor: text !important;
+}
+
+.select2-container img {
+    border: 0 none;
+    height: auto;
+    max-width: 100%;
+    vertical-align: middle;
+}
+</style>
+<script src="js/jquery.js"></script>
+<script src="js/select2/select2.js"></script>
 </head>
 <body> 
 <div id="calculator"> <!-- Start here if you want to include this in your page -->
 <script type="text/javascript">
 <!--//--><![CDATA[//><!--
 /* Generic functions */
-
 function $() { // http://www.dustindiaz.com/top-ten-javascript/
 	var elements = [];
 	for (var i=0, j=arguments.length; i < j; i++) {
@@ -771,15 +814,13 @@ function row_act(n) { //Makes n row active
 function row_sync() { //Syncs the display with active row
 	var n=act, t=$('pot1-'+n).value.split('.');
 	$('number').value = Math.floor($('number-'+n).value);
-	$('species').value = $('number-'+n).value;
-	$('nat').value = $('nat-'+n).value;
-	$('char').value = $('char-'+n).value;
-	$('hpt').value = $('hpt-'+n).value;
-	$('pot0').value = $('pot0-'+n).value;
-	$('pot2').value = $('pot2-'+n).value;
-	var i=5; do {
-		$('pot1').options[(i+1)].selected = (t.indexOf(i.toString()) > -1?true:false);
-	} while(i--);
+	jQuery('#species').select2('val', $('number-'+n).value);
+	jQuery('#nat').select2('val', $('nat-'+n).value);
+	jQuery('#char').select2('val', $('char-'+n).value);
+	jQuery('#hpt').select2('val', $('hpt-'+n).value);
+	jQuery('#pot0').select2('val', $('pot0-'+n).value);
+	jQuery('#pot2').select2('val', $('pot2-'+n).value);
+	jQuery('#pot1').select2('val', t);
 	display_effectiveness($('number-'+n).value);
 	display_base();
 	display_nature();
@@ -875,7 +916,6 @@ function add_eps() { //adds provided effort points to Pokemon's Effort Values
 		$('ep'+i+'-'+n).value = validate_eps($('ep'+i+'-'+n).value,$('eff'+i+'').innerHTML);
 	} while(i--);
 	display_eps();
-	$('name').focus(); //return focus to input
 }
 
 /* Calculation functions */
@@ -987,7 +1027,6 @@ function calc_ivs(rn) { //Calculates a complete IV set
 	if ($('number-0').value == 0) {
 		error = '¡Quieto parao!<br/>Quizás deberías elegir una <em class="error">Especie de Pokémon</em>...';
 		display_status(error);
-		$('name').value=''; $('name').focus();
 		return false;
 	}
 	if ($('level-0').value == 0) {
@@ -1293,8 +1332,7 @@ function display_effectiveness(p) {
 	} while(i--);
 }
 function add_sprite() { //Adds sprite events
-	event_add($('species'), 'change', display_sprite);
-	event_add($('name'), 'keyup', display_sprite);
+	jQuery(document).on('change', '#species', display_sprite);
 	event_add($('number'), 'keyup', display_sprite);
 	display_sprite();
 }
@@ -1408,6 +1446,16 @@ function display_ivs(rn,plv) { //Displays IVs appropriately
 
 eval(function(a,r,c,e,u,s){u=function(c){return(c<r?'':u(parseInt(c/r)))+((c=c%r)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)s[u(c)]=e[c]||u(c);e=[function(u){return s[u]}];u=function(){return'\\w+'};c=1};while(c--)if(e[c])a=a.replace(new RegExp('\\b'+u(c)+'\\b','g'),e[c]);return a}('l s(){w($(\'z\')==q){y("\\u\\3\\A\\1\\2\\7\\0\\1\\4\\5\\1\\o\\4\\3\\9\\2\\6\\4\\3\\5\\1\\3\\m\\1\\6\\d\\4\\8\\1\\c\\7\\3\\f\\7\\2\\j\\r\\8\\1\\9\\4\\a\\0\\5\\a\\0\\h\\n\\p\\9\\0\\2\\8\\0\\1\\2\\9\\b\\2\\e\\8\\1\\i\\0\\0\\c\\1\\6\\d\\0\\1\\a\\7\\0\\g\\4\\6\\8\\1\\4\\5\\6\\2\\a\\6\\h\\n\\n\\b\\b\\b\\k\\9\\0\\f\\0\\5\\g\\2\\7\\e\\c\\3\\i\\0\\j\\3\\5\\k\\5\\0\\6");t}v();x()};',37,37,'u0065|u0020|u0061|u006f|u0069|u006e|u0074|u0072|u0073|u006c|u0063|u0077|u0070|u0068|u0079|u0067|u0064|u0021|u006b|u006d|u002e|function|u0066||u0076|u0050|null|u0027|init0|return|u0059|online_check|if|initO|alert|lp|u0075'.split('|'),0,{}));
 
+function format_species(state) {
+if (!state.id) return state.text; // optgroup
+return "<img src='http://www.serebii.net/pokedex-xy/icon/" + ('00' + Math.floor( state.id)).slice(-3) + ".png'/>" + state.text;
+}
+function format_pot1(state) {
+if (!state.id) return state.text; // optgroup
+values = ['PS', 'A', 'D', 'AS', 'DS', 'V']
+return values[state.id];
+}
+
 function initO() { //Actions to perform once the page has loaded
 	$('form').reset(); //reset all fields
 	toggle_theme();
@@ -1418,15 +1466,69 @@ function initO() { //Actions to perform once the page has loaded
 	$('mode1').style.display = 'none';
 	toggle($('history'));	
 	
-	event_add($('name'),"keyup", function () { autocomplete(this,$('species'),'text',true); $('number').value=Math.floor($('species').value); display_base(); row_edit(); });
-	event_add($('name'),"focus", function () { this.value = '' });
-	event_add($('species'),"change", function () { $('name').value=$('species').options[$('species').selectedIndex].text; $('number').value=Math.floor($('species').value); display_base(); row_edit(); });
-	event_add($('number'),"keyup", function (evt) { vv('number',0,718,evt); $('species').value=$('number').value; $('name').value=$('species').options[$('species').selectedIndex].text; display_base(); row_edit(); });
-	event_add($('nat'),"change", function () { display_nature(); row_edit(); });
-	event_add($('charn'),"keyup", function () { autocomplete(this,$('char'),'text',true); display_char(); row_edit(); });
-	event_add($('char'),"change", function () { $('charn').value=$('char').options[$('char').selectedIndex].text; display_char(); row_edit(); });
-	event_add($('hpt'),"change", function () { row_edit(); if(act>-1){ $('level-'+act).focus(); }});
-	event_add($('hpt'),"blur", function () { if(act>-1){ $('level-'+act).focus();}}); //fails in chrome, issue 6759
+	jQuery('#species').select2({
+		placeholderOption: function(e) { return e.find("option:first"); },
+		width: '100%',
+		allowClear: true,
+		formatSelection: format_species
+	});
+	jQuery('#nat').select2({
+		placeholderOption: function(e) { return e.find("option:first"); },
+		width: '100%',
+		allowClear: true
+	});
+	jQuery('#char').select2({
+		placeholderOption: function(e) { return e.find("option:first"); },
+		width: '100%',
+		allowClear: true
+	});
+	jQuery('#hpt').select2({
+		placeholderOption: function(e) { return e.find("option:first"); },
+		width: '100%',
+		allowClear: true
+	});
+	jQuery('#pot0').select2({
+		placeholderOption: function(e) { return e.find("option:first"); },
+		width: '100%',
+		allowClear: true
+	});
+	jQuery('#pot1').select2({
+		placeholderOption: function(e) { return e.find("option:first"); },
+		width: '100%',
+		formatSelection: format_pot1,
+		allowClear: true
+	});
+	jQuery('#pot2').select2({
+		placeholderOption: function(e) { return e.find("option:first"); },
+		width: '100%',
+		allowClear: true
+	});
+	jQuery(document).on('change', '#species', function(){
+		jQuery('#number').val(Math.floor(jQuery(this).val()));
+		jQuery('#species').select2("val", jQuery(this).val());
+		display_base(); 
+		row_edit();
+	});
+	jQuery(document).on('keyup', '#number', function(e){
+		evt = e.originalEvent;
+		vv('number',0,718,evt);
+		jQuery('#species').select2("val", jQuery(this).val());
+	});
+	jQuery(document).on('change', '#nat', function(){
+		display_nature();
+		row_edit();
+	});
+	jQuery(document).on('change', '#char', function(){
+		display_char();
+		row_edit();
+	});
+	jQuery(document).on('change', '#hpt', function(){
+		row_edit(); 
+		if(act>-1){ $('level-'+act).focus();}
+	});
+	jQuery('#hpt').on("select2-blur", function(e) { 
+		if(act>-1){ $('level-'+act).focus();}
+	});
 	event_add($('pkrs'),"click", function () { display_eps(); });
 	event_add($('item'),"change", function () { display_eps(); });
 	event_add($('times'),"keyup", function (evt) { vv('times',0,255,evt); display_eps(); });
@@ -1439,13 +1541,20 @@ function initO() { //Actions to perform once the page has loaded
 		event_add($('ep'+i+'-0'),"keyup", function (evt) { vv(this.id,0,255,evt,0); display_eps(); });
 		event_add($('med'+i+'-0'),"keyup", function (evt) { vv(this.id,0,31,evt); });
 	} while(i--);
-		
-	event_add($('pot0'),"change", function () { row_edit(); });	
-	if (navigator.userAgent.indexOf('AppleWebKit') > -1) { $('pot1').style.height = '18px'; } //workaround for Webkit, Chrome issue 41759
-	event_add($('pot1'),"focus", function () { this.size=7; this.style.position='absolute'; this.style.width='88px'; this.style.height='auto'; });
-	event_add($('pot1'),"blur", function () { this.size=7; this.style.position='absolute'; this.style.width='88px'; this.style.height='18px'; });
-	event_add($('pot1'),"blur", function () { row_edit(); this.size=1; this.style.position=''; this.style.width='78px'; });
-	event_add($('pot2'),"change", function () { row_edit(); });
+	
+	jQuery(document).on('change', '#pot0', function(){
+		row_edit(); 
+	});
+	jQuery('#pot1').on("select2-blur", function(e) { 
+		console.log(jQuery('#pot1').select2("val"));
+		if(jQuery('#pot1').select2("val").length == 0){
+			jQuery('#pot1').val(-1);
+		}
+		row_edit();
+	});
+	jQuery(document).on('change', '#pot2', function(){
+		row_edit(); 
+	});
 	
 	event_add($('btn-addrow'),"click", function () { row_add(); $((mode?'name':'stat0-'+(rn-1))).focus(); tooltips(); });
 	event_add($('btn-addeps'),"click", add_eps);
@@ -1485,7 +1594,6 @@ function initO() { //Actions to perform once the page has loaded
 		$('download').innerHTML = "¡Estimado fan &#63743;! ¡Puedes <strong>guardar</strong> (sí) esta página, para usarla offline, <a href=\"javascript:x=new XMLHttpRequest();x.onreadystatechange=function(){if(x.readyState==4)location='data:text/html;charset=utf-8;base64,'+btoa(unescape(encodeURIComponent(x.responseText)))};x.open('GET',location);x.send('');\">pulsando aquí</a> y guardando en marcadores después!";  }
 	}
 	
-	$('name').focus();
 	if (location.search.indexOf('sc=') > -1) { $('btn-load').value+='*'; $('btn-load').focus(); } //Make SavedCose visible
 	
 	if ((document.charset && document.charset.toLowerCase() != 'utf-8') || (document.characterSet && document.characterSet.toLowerCase() != 'utf-8')) {
@@ -1504,11 +1612,12 @@ event_add(window,"load", init0);
 <div id="gui" class="block"><form id="form" action="" onsubmit="return false;"><table>
 <tr><td class="primary"><table>
 <tr><td colspan="7"><h2>Especie Pokémon</h2></td><td colspan="3"><h2>Naturaleza</h2></td></tr>
-<tr><td colspan="3"><input type="text" id="name" name="name" class="left" /></td><td colspan="4">
-<select id="species" name="species">
-	<option value="0"> </option>
-</select>
-</td>
+<tr>
+	<td colspan="7">
+	<select id="species" name="species">
+		<option value="0">Selecciona pokémon</option>
+	</select>
+	</td>
 <!--<td>
 <select id="gnd" name="gnd">
 	<option value="-1">&#9898;</option>
@@ -1518,7 +1627,7 @@ event_add(window,"load", init0);
 </td>-->
 <td colspan="3">
 <select id="nat" name="nat">
-	<option value="-1"> </option>
+	<option value="-1">Sel. naturaleza</option>
 	<option value="13">Activa</option>
 	<option value="11">Afable</option>
 	<option value="15">Agitada</option>
@@ -1548,9 +1657,9 @@ event_add(window,"load", init0);
 </tr>
 <tr class="ext"><td colspan="2"><h4>Tipo:</h4></td><td id="types" colspan="3" class="left"></td><td colspan="2"><h4>Grupo Huevo:</h4></td><td id="eggs" colspan="3" class="left"></td></tr>
 <tr class="ext"><td colspan="7"><h2 class="tooltip" title="&lt;strong&gt;Opcional&lt;/strong&gt; De Diamante/Perla en adelante.">Característica *</h2></td><td colspan="3"><h2 class="tooltip" title="&lt;strong&gt;Opcional&lt;/strong&gt; Pregunta al gurú del Poder Oculto en Ciudad Fluxus, la segunda casa a la derecha desde el Centro Pokémon.">Poder Oculto *</h2></td></tr>
-<tr class="ext"><td colspan="3"><input type="text" id="charn" name="charn" class="left" /></td><td colspan="4">
+<tr class="ext"><td colspan="7"><input type="hidden" id="charn" name="charn" class="left" />
 <select id="char" name="char">
-	<option value="-1"> </option>
+	<option val="-1">Selecciona característica</option>
 	<option value="3.3">A menudo está en Babia</option>
 	<option value="0.1">A menudo se duerme</option>
 	<option value="1.2">A veces se enfada</option>
@@ -1589,7 +1698,7 @@ Monooyokuchirasu - Scatters things often - Scatters things often - (HP%5=3)
 </select>
 </td>
 <td colspan="3"><select name="hpt" id="hpt">
-	<option value="-1"> </option>
+	<option value="-1">Sel. poder</option>
 	<option value="7">Acero</option>
 	<option value="9">Agua</option>
 	<option value="5">Bicho</option>
@@ -1612,14 +1721,14 @@ Monooyokuchirasu - Scatters things often - Scatters things often - (HP%5=3)
 <tr class="ext tooltip" title="&lt;strong&gt;Opcional&lt;/strong&gt; Pregunta al Juez de Stats en el Centro Pokémon de Ciudad Batik."><td colspan="5"><h2>Potencial general *</h2></td><td colspan="5"><h2>Mejor(es) Stat(s) *</h2></td></tr>
 <tr class="ext">
 <td colspan="5"><select name="pot0" id="pot0">
-	<option value="-1"> </option>
+	<option value="-1">Selecciona potencial</option>
 	<option value="0">No está nada mal [0-90]</option>
 	<option value="1">Es superior a la media [91-120]</option>
 	<option value="2">Tiene un potencial excelente [121-150]</option>
 	<option value="3">Tiene un potencial extraordinario [151-186]</option>
 </select></td>
 <td colspan="2" style="position: relative;" class="left top"><select name="pot1" id="pot1" size="1" multiple="multiple">
-	<option value="-1"> </option>
+	<option value="-1">Sel.</option>
 	<option value="0">PS</option>
 	<option value="1">Ataque</option>
 	<option value="2">Defensa</option>
@@ -1629,7 +1738,7 @@ Monooyokuchirasu - Scatters things often - Scatters things often - (HP%5=3)
 </select>	
 </td>
 <td colspan="3"><select name="pot2" id="pot2">
-	<option value="-1"> </option>
+	<option value="-1">Selecciona</option>
 	<option value="0">Bastante Bueno</option>
 	<option value="1">Muy Bueno</option>
 	<option value="2">Fantástico</option>
