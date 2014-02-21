@@ -1542,10 +1542,10 @@ function initO() { //Actions to perform once the page has loaded
 	jQuery(document).on('change', '#pot0', function(){
 		row_edit(); 
 	});
-	jQuery('#pot1').on("select2-blur", function(e) { 
-		console.log(jQuery('#pot1').select2("val"));
+	jQuery('#pot1').on("select2-blur", function(e) {
+		jQuery('#pot1 option:first').prop("selected", false);
 		if(jQuery('#pot1').select2("val").length == 0){
-			jQuery('#pot1').val(-1);
+			jQuery('#pot1 option:first').prop("selected", true);
 		}
 		row_edit();
 	});
