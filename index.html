@@ -1471,13 +1471,13 @@ function initO() { //Actions to perform once the page has loaded
 		placeholderOption: function(e) { return e.find("option:first"); },
 		width: '100%',
 		allowClear: true,
-		formatResult: function(state){
-			if (!state.id) return state.text; // optgroup
-			return '<img class="pkmsprite" style="background-position: '+(pkmsprite_pos[Math.floor(state.id - 1)] * -1) +'px 0px;"/>' + state.text;
+		formatResult: function(pkm){
+			if (!pkm.id) return pkm.text; // optgroup
+			return '<img class="pkmsprite" style="background-position: '+(pkmsprite_pos[Math.floor(pkm.id - 1)] * -1) +'px 0px;"/>' + pkm.text;
 		},
-		formatSelection: function(state){
-			if (!state.id) return state.text; // optgroup
-			return '<img class="pkmsprite" style="background-position: '+(pkmsprite_pos[Math.floor(state.id - 1)] * -1) +'px 0px;"/>' + state.text;
+		formatSelection: function(pkm){
+			if (!pkm.id) return pkm.text; // optgroup
+			return '<img class="pkmsprite" style="background-position: '+(pkmsprite_pos[Math.floor(pkm.id - 1)] * -1) +'px 0px;"/>' + pkm.text;
 		}
 	});
 	jQuery('#nat').select2({
@@ -1503,10 +1503,10 @@ function initO() { //Actions to perform once the page has loaded
 	jQuery('#pot1').select2({
 		placeholderOption: function(e) { return e.find("option:first"); },
 		width: '100%',
-		formatSelection: function(state){
-			if (!state.id) return state.text; // optgroup
+		formatSelection: function(nat){
+			if (!nat.id) return nat.text; // optgroup
 			values = ['PS', 'A', 'D', 'AS', 'DS', 'V']
-			return values[state.id];
+			return values[nat.id];
 		},
 		allowClear: true
 	});
