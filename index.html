@@ -2219,6 +2219,7 @@ function initO() { //Actions to perform once the page has loaded
 		evt = e.originalEvent;
 		vv('number',0,718,evt);
 		jQuery('#species').select2("val", jQuery(this).val());
+		jQuery('#species').trigger( "change" );
 	});
 	jQuery(document).on('change', '#nat', function(){
 		display_nature();
@@ -2370,9 +2371,9 @@ event_add(window,"load", init0);
 	<option value="0.1">A menudo se duerme</option>
 	<option value="1.2">A veces se enfada</option>
 	<option value="4.1">Algo orgulloso</option>
-	<option value="2.1">Buen fajador</option>
 	<option value="2.0">Cuerpo resistente</option>
 	<option value="0.2">Duerme mucho</option>
+	<option value="2.1">Es un buen fajador</option>
 	<option value="5.3">Es un poco payaso</option>
 	<option value="3.0">Extremadamente curioso</option>
 	<option value="5.4">Huye rápido</option>
